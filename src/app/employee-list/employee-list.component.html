@@ -1,3 +1,4 @@
+<app-home></app-home>
 <div class="col-md-12">
     <h2> Employee List</h2>
     <div class="table-responsive table-container">
@@ -25,7 +26,9 @@
             </td>
           </tr>
         </tbody>
-
+        <div>
+          <p *ngIf="ErrorShow" class="ErrorStyle">This user has no permission to delete</p>
+        </div>
       </table>
     </div>
   </div>

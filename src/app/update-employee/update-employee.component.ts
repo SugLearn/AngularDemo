@@ -13,6 +13,7 @@ export class UpdateEmployeeComponent implements OnInit {
 
   id:number;
   emp: Employee;
+  ErrorShow = false;
   // submitted: false;
 
   constructor(private route: ActivatedRoute, private router: Router, private employeeService: EmployeeService) { }
@@ -24,27 +25,36 @@ export class UpdateEmployeeComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
 
     this.employeeService.getEmployee(this.id).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.emp = data;
 
-    }, error => console.error());
+    }, error => console.error(error)
+
+
+    );
 
   }
 
   updateEmployee(){
+
     this.employeeService.updateEmployee(this.id, this.emp)
-    .subscribe(data => console.log(data), error => console.log(error));
+    .subscribe(data =>{console.log(data); this.gotoList();  } ,
+    error => {console.log(error); this.ErrorShow = true; }
+
+    );
     this.emp = new Employee;
-    this.gotoList();
+
   }
 
   onSubmit(){
+
+    this.gotoList();
     this.updateEmployee();
     // this.submitted = true;
   }
 
   gotoList(){
-    this.router.navigate(['/employees']);
+     this.router.navigate(['/employees']);
   }
 
 }

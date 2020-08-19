@@ -12,7 +12,8 @@ import { Employee } from '../employee';
 export class CreateEmployeeComponent implements OnInit {
   employee: Employee = new Employee();
   submitted = false;
-
+  ErrorShow = false;
+  LogError: boolean;
   constructor(private router: Router, private empService: EmployeeService) { }
 
   ngOnInit() {
@@ -27,19 +28,33 @@ export class CreateEmployeeComponent implements OnInit {
 
   save() {
     this.empService.createEmployee(this.employee)
-      .subscribe(data => console.log(data), error => console.log(error));
+      .subscribe(data =>{
+        console.log(data);
+        this.gotoList();
+        this.LogError = true;
+       } ,
+       error => {
+        console.log(error);
+        this.ErrorShow = true;
+
+      });
     this.employee = new Employee();
 
   }
 
   onSubmit() {
-    this.submitted = true;
-    this.save();
-    this.gotoList();
+     this.submitted = true;
+     this.save();
+    if(this.LogError){
+      this.gotoList();
+  }
   }
 
   gotoList() {
-    this.router.navigate(['/employees']);
+
+      this.router.navigate(['/employees']);
+
+
   }
 
 }

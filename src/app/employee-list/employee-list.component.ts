@@ -4,6 +4,7 @@ import { Employee } from '../employee';
 import { EmployeeService } from '../employee.service';
 import { Route } from '@angular/compiler/src/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../login/auth.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -12,10 +13,11 @@ import { Router } from '@angular/router';
 })
 export class EmployeeListComponent implements OnInit {
   employees: Employee[];
-
-  constructor(private employeeService: EmployeeService, private router: Router) { }
+  ErrorShow = false;
+  constructor(private employeeService: EmployeeService, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
+
     this.employeeService.getAllEmployees().subscribe((data: Employee[]) => {
       this.employees = data;
     })
@@ -32,7 +34,7 @@ export class EmployeeListComponent implements OnInit {
           console.log(data);
           this.reloadData();
         },
-        error => console.log(error));
+        error => {console.log(error); this.ErrorShow = true; });
   }
 
   reloadData(){
@@ -40,5 +42,7 @@ export class EmployeeListComponent implements OnInit {
       this.employees = data;
     })
   }
+
+
 
 }
